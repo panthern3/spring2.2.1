@@ -10,19 +10,30 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public void setSeries(int series) {
-        this.series = series;
-    }
-
     @Column(name = "model")
     private String model;
 
     @Column(name = "series")
     private int series;
 
-    // getters and setters
+    public Car() {
+        // пустой конструктор
+    }
+
+    // геттеры и сеттеры
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public int getSeries() {
+        return series;
+    }
+
+    public void setSeries(int series) {
+        this.series = series;
+    }
 }

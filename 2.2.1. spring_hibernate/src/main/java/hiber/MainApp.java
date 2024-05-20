@@ -7,6 +7,8 @@ import hiber.service.UserService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 
+import java.util.List;
+
 public class MainApp {
    public static void main(String[] args) {
       AbstractApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
@@ -14,28 +16,24 @@ public class MainApp {
       UserService userService = context.getBean(UserService.class);
 
       Car car1 = new Car();
-      car1.setModel("Lada2");
+      car1.setModel("Granta");
       car1.setSeries(1);
 
-      User user1 = new User();
-      user1.setFirstName("John Doe");
-      user1.setEmail("john.doe@example.com");
-      user1.setCar(car1);
+      // Проверяем, существует ли машина в базе данных
+      User existingUser = userService.findByCarModelAndSeries(car1.getModel(), car1.getSeries());
+      if (existingUser != null) {
+         System.out.println("User with car " + car1.getModel() + " series " + car1.getSeries() + " already exists:");
+         System.out.println("Name: " + existingUser.getFirstName());
+      } else {
+         // Машина не существует, создаем нового пользователя
+         User user1 = new User();
+         user1.setFirstName("Selm Doe");
+         user1.setEmail("john.doe@example.com");
+         user1.setCar(car1);
 
-      Car car2 = new Car();
-      car2.setModel("Honda");
-      car2.setSeries(2);
+         userService.add(user1);
+      }
 
-      User user2 = new User();
-      user2.setFirstName("Jane Doe");
-      user2.setEmail("jane.doe@example.com");
-      user2.setCar(car2);
-
-      userService.add(user1);
-      userService.add(user2);
-
-      User retrievedUser = userService.findByCarModelAndSeries("Lada2", 1);
-      System.out.println("Retrieved User: " + retrievedUser.getFirstName());
 
       context.close();
    }
