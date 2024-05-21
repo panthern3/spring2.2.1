@@ -36,16 +36,10 @@ public class UserServiceImp implements UserService {
       return userDao.listUsers();
    }
 
+   @Transactional(readOnly = true)
    @Override
-   @Transactional
    public User findByCarModelAndSeries(String model, int series) {
-      Session session = sessionFactory.getCurrentSession();
-      Query<User> query = session.createQuery(
-              "FROM User u WHERE u.car.model = :model AND u.car.series = :series", User.class);
-      query.setParameter("model", model);
-      query.setParameter("series", series);
-      return query.uniqueResult();
+      return userDao.findByCarModelAndSeries(model, series);
    }
-
 
 }

@@ -34,13 +34,6 @@ public class UserDaoImp implements UserDao {
               "FROM User u WHERE u.car.model = :model AND u.car.series = :series", User.class);
       query.setParameter("model", model);
       query.setParameter("series", series);
-      List<User> resultList = query.getResultList();
-      if (resultList.isEmpty()) {
-         return null; // Если результаты не найдены
-      } else {
-         return resultList.get(0); // Вернуть первый результат
+      return query.getResultList().stream().findFirst().orElse(null);
       }
    }
-
-
-}
